@@ -1,0 +1,25 @@
+{
+  "name": "metermiser_v3",
+  "version": "1.0.0",
+  "description": "Meter Miser helps small business owners manage heating and cooling costs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Scott Anderson",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "dependencies": {
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.38.0",
+    "xml2js": "^0.4.19"
+  }
+}
