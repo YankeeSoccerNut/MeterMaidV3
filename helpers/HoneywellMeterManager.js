@@ -2,7 +2,7 @@ const exec = require('child_process').exec
 const parseString = require('xml2js').parseString
 
 class HoneywellMeterManager {
-  async openConnection (email, password) {
+  async openConnection (user) {
     // Get user id and password.....// TODO: encrypt/decrypt for security
     // Now format then make the request for a sessionId....using curl
     // alternate version had to format this way to avoid having OS interpret the & as 'run in background'
@@ -11,18 +11,15 @@ class HoneywellMeterManager {
         'https://tccna.honeywell.com/ws/MobileV2.asmx/AuthenticateUserLogin' \
     -d applicationID=a0c7a795-ff44-4bcd-9a99-420fac57ff04 \
     -d ApplicationVersion=2 \
-    -d Username=${email} \
+    -d Username=${user.uid} \
     -d UiLanguage=English \
-    -d Password=${password}`
+    -d Password=${user.password}`
 
     const sessionID = await new Promise(function (resolve, reject) {
       // need to ask the OS to exec the curl command for us...
       exec(curlRequest, (error, xmlResponse, errorResponse) => {
-        console.log('session xmlResponse: ' + xmlResponse)
-        console.log('errorResponse: ' + errorResponse)
-
         if (error !== null) {
-          console.log('exec error', error)
+          console.log('exec errorResponse', errorResponse)
           reject(error)
         }
 
@@ -36,6 +33,7 @@ class HoneywellMeterManager {
         })
       })
     })
+    console.log('opened Honeywell connection: ', sessionID)
     return sessionID
   }
 
@@ -93,7 +91,7 @@ class HoneywellMeterManager {
     return this._transformPollResults(xmlPollResponse)
   }
 
-  closeConnection () {
+  closeConnection (sessionID) {
     // need to ask the OS to exec the curl command for us...
     // logoff the session with Honeywell...
     const curlRequest = `curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET 'https://tccna.honeywell.com//ws/MobileV2.asmx/LogOff?sessionID=${sessionID}'`
@@ -103,7 +101,7 @@ class HoneywellMeterManager {
         console.log('exec error: ' + errorResponse)
         return error
       }
-      console.log('closed Honeywell connection')
+      console.log('closed Honeywell connection: ', sessionID)
     })
   }
 }
