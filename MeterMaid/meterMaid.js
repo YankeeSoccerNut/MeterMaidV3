@@ -11,13 +11,7 @@ const { Client } = require('pg')
 const getVendorMeterManager = require('../helpers/getVendorMeterManager')
 const processVendorPollData = require('../helpers/processVendorPollData')
 
-global.meterMiserDBClient = new Client({
-  user: 'meterMiser',
-  host: 'localhost',
-  database: 'meterMiser',
-  password: 'password',
-  port: 5432
-})
+global.meterMiserDBClient = new Client(config.db)
 
 const testUser = {
   vendor: 'Honeywell',
@@ -40,13 +34,8 @@ async function main () {
 
     await global.meterMiserDBClient.connect()
 
-    // await processVendorPollData(testUser.vendor, pollResults)
+    await processVendorPollData(testUser.vendor, pollResults)
 
-    // dbConnection.connect()
-    // console.log('dbConnection CLOSING!')
-    // dbConnection.end()
-
-    // console.log(pollResults)
     await global.meterMiserDBClient.end()
     console.log('database connection closed')
   } catch (error) {

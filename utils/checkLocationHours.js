@@ -1,14 +1,17 @@
-function checkLocationHours (site) {
+function checkLocationHours (location) {
   // Check the DB to see if the user has established LocationHours.  Default the isOpenDuringPoll the Reading to false, it may be overwritten later.
 
-  console.log('checkLocationHours')
+  console.log('checkLocationHours...')
 
   var dbPromise = new Promise(function (resolve, reject) {
-    var checkLocationHoursSQL = `SELECT * from LocationHours WHERE locationId = ${
-      site.LocationData.LocationID
+    var checkLocationHoursSQL = `SELECT * from location_hours WHERE location_id = ${
+      location.LocationData.LocationID
     };`
 
-    dbConnection.query(checkLocationHoursSQL, function (err, results) {
+    global.meterMiserDBClient.query(checkLocationHoursSQL, function (
+      err,
+      results
+    ) {
       if (err) {
         console.log(err)
         reject(err)
@@ -16,10 +19,10 @@ function checkLocationHours (site) {
         location.ThermostatReadingData.isOpenDuringPoll = false
         if (results.length > 0) {
           // locationHours exist!
-          site.LocationData.hasLocationHours = true
+          location.LocationData.hasLocationHours = true
           resolve(true)
         } else {
-          site.LocationData.hasLocationHours = false
+          location.LocationData.hasLocationHours = false
           resolve(false) // no locationHours found
         }
       }

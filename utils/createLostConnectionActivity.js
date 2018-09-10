@@ -9,7 +9,7 @@ function createLostConnectionActivity (site, count) {
   site.ThermostatReadingData.triggerId = activityObj.triggerId
   activityObj.message = `From meterMaid:  Lost connection? No change in  ${count} polls`
 
-  let dbPromise = createActivity(dbConnection, activityObj)
+  let dbPromise = createActivity(activityObj)
   return dbPromise
 }
 

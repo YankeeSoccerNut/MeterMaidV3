@@ -9,7 +9,7 @@ function createLocationHoursActivity (site) {
   site.ThermostatReadingData.triggerId = activityObj.triggerId
   activityObj.message = 'From meterMaid:  No LocationHours';
 
-  let dbPromise = createActivity(dbConnection, activityObj)
+  let dbPromise = createActivity(activityObj)
 
   return dbPromise
 }
