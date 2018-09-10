@@ -1,5 +1,3 @@
-activityObj = require('./activityObj')
-
 function createActivity (dbConnection, activityObj) {
   console.log('In createActivity...')
 

@@ -1,3 +1,6 @@
+const activityObj = require('./activityObj')
+const createActivity = require('./createActivity')
+
 function createLostConnectionActivity (site, count) {
   console.log('createLostConnectionActivity')
   // Use a utility function here to insert into the ActivityLog table....
@@ -6,9 +9,8 @@ function createLostConnectionActivity (site, count) {
   site.ThermostatReadingData.triggerId = activityObj.triggerId
   activityObj.message = `From meterMaid:  Lost connection? No change in  ${count} polls`
 
-  let dbPromise = createActivity(dbConnection, activityObj) // createActivity returns a promise
-
+  let dbPromise = createActivity(dbConnection, activityObj)
   return dbPromise
-} // createLostConnectionActivity
+}
 
 module.exports = createLostConnectionActivity
