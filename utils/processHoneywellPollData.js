@@ -13,53 +13,27 @@ async function processHoneywellPollData (pollData) {
 
   let saveReadingsPromisesArray = []
 
-  let pollFinishedPromise = new Promise(function (resolve, reject) {
-    let readyToFormatPromise = null
+  let readyToSaveReading = null
+  let hasLocationHours = null
 
-    pollData.map(site => {
-      // console.log(site);
-      checkLocationHours(site).then(hasLocationHours => {
-        if (hasLocationHours) {
-          readyToFormatPromise = checkIsOpenDuringPoll(site)
-        } else {
-          readyToFormatPromise = createLocationHoursActivity(site)
-        }
-        readyToFormatPromise.then(() => {
-          saveReadingsPromisesArray.push(saveReadings(site))
-          Promise.all(saveReadingsPromisesArray).then(() => {
-            resolve(true)
-          })
-          console.log('***********PROMISES PROMISES***************')
-          console.log(saveReadingsPromisesArray)
-        }) // readyToFormatPromise.then
-      }) //  checkLocationHours.then
-    }) // poll.Map
-  }).catch(err => {
-    console.log(err)
-  })
+  // here's a case where map won't work because it creates a function scope where
+  // await CANNOT be used.  for loop is a code block within the broader function so
+  // await CAN be used
+  for (const site of pollData) {
+    hasLocationHours = await checkLocationHours(site)
+    if (hasLocationHours) {
+      site.LocationData.hasOperatingHours = true
+      readyToSaveReading = await checkIsOpenDuringPoll(site)
+    } else {
+      site.LocationData.hasOperatingHours = false
+      readyToSaveReading = await createLocationHoursActivity(site)
+    }
+    if (readyToSaveReading) {
+      saveReadingsPromisesArray.push(saveReadings(site))
+    }
+  }
 
-  return pollFinishedPromise
-  // pollData.map(location => {
-  //   console.log('mapping location in processHoneywellPollData....')
-  //   checkLocationHours(location)
-  //     .then(hasLocationHours => {
-  //       console.log('hasLocationHours resolved.....')
-  //       if (hasLocationHours) {
-  //         readyToSaveReadingPromise = checkIsOpenDuringPoll(location)
-  //       } else {
-  //         readyToSaveReadingPromise = createLocationHoursActivity(location)
-  //       }
-  //       readyToSaveReadingPromise.then(() => {
-  //         console.log('resolved readyToSaveReadingPromise....>>>>')
-  //         saveReadingsPromisesArray.push(saveReadings(location))
-  //       })
-  //     })
-  //     .catch(error => console.log('error mapping through locations ', error))
-  // })
-
-  // console.log('saveReadingsPromisesArray: ', saveReadingsPromisesArray)
-  // await Promise.all(saveReadingsPromisesArray)
-  // console.log('Promise.all(saveReadingsPromisesArray) resolved!')
+  await Promise.all(saveReadingsPromisesArray)
 }
 
 module.exports = processHoneywellPollData

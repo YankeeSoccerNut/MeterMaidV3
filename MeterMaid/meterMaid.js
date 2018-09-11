@@ -32,10 +32,9 @@ async function main () {
     await global.meterMiserDBClient.connect()
     console.log('database connection OPENED')
 
-    processVendorPollData(testUser.vendor, pollResults).then(() => {
-      // global.meterMiserDBClient.end()
-      console.log('database connection CLOSED')
-    })
+    await processVendorPollData(testUser.vendor, pollResults)
+    global.meterMiserDBClient.end()
+    console.log('database connection CLOSED')
   } catch (error) {
     console.log('an error has occurred...', error)
   }

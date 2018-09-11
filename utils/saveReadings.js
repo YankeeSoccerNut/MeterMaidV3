@@ -2,7 +2,7 @@ const translateHoneywellValues = require('./translateHoneywellValues')
 const confirmFreshReading = require('./confirmFreshReading')
 
 async function saveReadings (site) {
-  console.log('saveReadingsProcess')
+  console.log('saveReadingsProcess', site)
 
   translateHoneywellValues(site)
 
@@ -32,7 +32,7 @@ async function saveReadings (site) {
 }', ${sR.fanRunning}, ${sR.weatherIsDefined}, ${sR.weatherIsValid}, ${
   sL.CurrentWeather[0].Temperature
 }, '${sL.CurrentWeather[0].TempUnit}', '${sL.CurrentWeather[0].Condition}',
-        ${sR.isOpenDuringPoll}, ${sR.thermCreatedDay}, ${
+        ${sL.hasOperatingHours}, ${sR.thermCreatedDay}, ${
   sR.thermCreatedHour
 }, ${sR.thermCreatedMin}, ${sR.triggerId});`
 
