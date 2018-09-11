@@ -16,7 +16,7 @@ async function processHoneywellPollData (pollData) {
   let readyToSaveReading = null
   let hasLocationHours = null
 
-  // here's a case where map won't work because it creates a function scope where
+  // here's a case where map won't work because it creates a function scope wherein
   // await CANNOT be used.  for loop is a code block within the broader function so
   // await CAN be used
   for (const site of pollData) {
