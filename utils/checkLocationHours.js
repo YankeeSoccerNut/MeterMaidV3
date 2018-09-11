@@ -1,8 +1,6 @@
 async function checkLocationHours (location) {
   // Check the DB to see if the user has established LocationHours.  Default the isOpenDuringPoll the Reading to false, it may be overwritten later.
 
-  console.log('checkLocationHours...')
-
   const checkLocationHoursSQL = `SELECT * from location_hours WHERE location_id = ${
     location.LocationData.LocationID
   };`

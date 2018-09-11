@@ -1,3 +1,4 @@
+// Right now we're focused on Honeywell but the goal is to support multiple vendors
 const processHoneywellPollData = require('../utils/processHoneywellPollData')
 
 function processVendorPollData (vendor, pollData) {

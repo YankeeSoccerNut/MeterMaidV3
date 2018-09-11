@@ -1,11 +1,9 @@
 function createActivity (activityObj) {
-  console.log('In createActivity...')
-
-  var insertSQL = `INSERT INTO activity_log (status, location_id, trigger_id, message) VALUES (0, ${
+  const insertSQL = `INSERT INTO activity_log (status, location_id, trigger_id, message) VALUES (0, ${
     activityObj.locationId
   }, ${activityObj.triggerId}, '${activityObj.message}');`
 
-  var dbPromise = new Promise(function (resolve, reject) {
+  let dbPromise = new Promise(function (resolve, reject) {
     global.meterMiserDBClient.query(insertSQL, function (err, result) {
       if (err) {
         reject(err)

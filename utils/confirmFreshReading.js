@@ -15,8 +15,6 @@ async function confirmFreshReading (site) {
      FROM readings WHERE thermostat_id = ${sT.ThermostatID} 
      AND therm_created_at = '${sR.Created}' GROUP BY thermostat_id;`
 
-    // console.log('freshReadingSQL: \n', freshReadingSQL)
-
     let results = await global.meterMiserDBClient.query(freshReadingSQL)
 
     if (results.rowCount && results.rows[0].readings_count >= 3) {

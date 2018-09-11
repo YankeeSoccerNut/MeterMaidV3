@@ -1,8 +1,6 @@
+const moment = require('moment')
+
 async function checkIsOpenDuringPoll (site) {
-  console.log('checkIsOpenDuringPoll')
-
-  const moment = require('moment')
-
   const mDate = moment(site.ThermostatReadingData.Created, moment.ISO_8601)
   const dayOfWeek = mDate.day()
   const hour = mDate.hour()
