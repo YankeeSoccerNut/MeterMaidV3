@@ -18,9 +18,6 @@ const testUser = {
   uid: config.honeywellUID,
   password: config.honeywellPass
 }
-// const createActivity = require('../utils/createActivity')
-
-// const dbConnection = mysql.createConnection(config.db)
 
 async function main () {
   console.log('Start of processing....')
@@ -33,11 +30,12 @@ async function main () {
     vendorMeterManager.closeConnection(connectionID)
 
     await global.meterMiserDBClient.connect()
+    console.log('database connection OPENED')
 
-    await processVendorPollData(testUser.vendor, pollResults)
-
-    await global.meterMiserDBClient.end()
-    console.log('database connection closed')
+    processVendorPollData(testUser.vendor, pollResults).then(() => {
+      // global.meterMiserDBClient.end()
+      console.log('database connection CLOSED')
+    })
   } catch (error) {
     console.log('an error has occurred...', error)
   }

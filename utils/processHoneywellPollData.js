@@ -39,7 +39,6 @@ async function processHoneywellPollData (pollData) {
   })
 
   return pollFinishedPromise
-
   // pollData.map(location => {
   //   console.log('mapping location in processHoneywellPollData....')
   //   checkLocationHours(location)

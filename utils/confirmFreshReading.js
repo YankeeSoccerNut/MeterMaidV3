@@ -11,18 +11,18 @@ async function confirmFreshReading (site) {
   let sR = site.ThermostatReadingData
 
   try {
-    const freshReadingSQL = `SELECT thermostat_id, COUNT(*) as readingsCount FROM readings WHERE thermostat_id = ${
+    const freshReadingSQL = `SELECT thermostat_id, COUNT(*) as readings_count FROM readings WHERE thermostat_id = ${
       sT.ThermostatID
-    } AND therm_created_at = '${sR.Created} GROUP BY thermostat_id';`
+    } AND therm_created_at = '${sR.Created}' GROUP BY thermostat_id;`
 
     console.log('freshReadingSQL: \n', freshReadingSQL)
 
     let results = await global.meterMiserDBClient.query(freshReadingSQL)
     console.log('confirmFreshReadingSQL results\n', results)
 
-    if (results[0].readingsCount >= 3) {
+    if (results[0].readings_count >= 3) {
       // 3 strikes rule!
-      await createLostConnectionActivity(site, results[0].readingsCount)
+      await createLostConnectionActivity(site, results[0].readings_count)
       return false
     } else {
       return true
