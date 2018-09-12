@@ -8,8 +8,8 @@
 
 const config = require('../config/config')
 const { Client } = require('pg')
-const getVendorMeterManager = require('../helpers/getVendorMeterManager')
-const processVendorPollData = require('../helpers/processVendorPollData')
+const getVendorMeterManager = require('./helpers/getVendorMeterManager')
+const processVendorPollData = require('./helpers/processVendorPollData')
 
 global.meterMiserDBClient = new Client(config.db)
 

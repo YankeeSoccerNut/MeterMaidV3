@@ -1,0 +1,21 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Backend API for MeterMiser",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Scott Anderson",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "graphql": "^14.0.2",
+    "postgraphile": "^4.0.0-rc.4.1"
+  },
+  "devDependencies": {},
+  "resolutions": {
+    "graphql": "^14.0.2"
+  }
+}
