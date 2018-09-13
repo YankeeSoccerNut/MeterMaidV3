@@ -4,7 +4,8 @@
   "description": "Backend API for MeterMiser",
   "main": "server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "nodemon server.js"
   },
   "author": "Scott Anderson",
   "license": "ISC",

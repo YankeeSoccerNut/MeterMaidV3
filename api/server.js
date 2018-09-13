@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const { postgraphile } = require('postgraphile');
 
 const app = express();
@@ -11,10 +10,17 @@ app.use(
     'public',
     {
       graphiql: true, // expose graphiql UI at /graphiql
-      dynamicJson: true // return JSON to remove need to JSON.parse
+      dynamicJson: true, // return JSON to remove need to JSON.parse
+      showErrorStack: true,
+      exportGqlSchemaPath: ['hint', 'detail', 'errcode']
     }
   )
 );
+
+app.use((req, res, next) => {
+  console.log('Time:', Date.now());
+  next();
+});
 
 app.listen(4000, () => {
   console.log('Listening on port 4000...');
