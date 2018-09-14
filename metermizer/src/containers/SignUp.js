@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,9 +15,21 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import styles from '../styles/SignUp';
 
 const SIGNUP_USER = gql`
-  mutation SignUp($email: String!, $smsphone: String!, $password: String!) {
-    createUser(
-      input: { user: { email: $email, phone: $smsphone, password: $password } }
+  mutation SignUp(
+    $firstName: String!
+    $lastName: String!
+    $email: String!
+    $phone: String!
+    $password: String!
+  ) {
+    signupUser(
+      input: {
+        firstName: $firstName
+        lastName: $lastName
+        email: $email
+        phone: $phone
+        password: $password
+      }
     ) {
       user {
         id
@@ -26,10 +37,15 @@ const SIGNUP_USER = gql`
     }
   }
 `;
-class SignUp extends PureComponent {
+
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.handleChange = this.handleChange.bind(this);
+    this.onSignUp = this.onSignUp.bind(this);
+    this.signUpCompleted = this.signUpCompleted.bind(this);
+    this.signUpError = this.signUpError.bind(this);
   }
 
   handleChange(e) {
@@ -38,13 +54,23 @@ class SignUp extends PureComponent {
     });
   }
 
-  submitForm(e) {
+  onSignUp(e) {
     e.preventDefault();
+    console.log('onSignUp e', e);
     this.props.onSignUp(this.state);
   }
 
+  signUpCompleted(data) {
+    console.log('signUpCompleted data: ', data);
+  }
+
+  signUpError(error) {
+    console.log('signUpError error: ', error);
+  }
+
   render() {
-    const { email, smsphone, password } = this.state;
+    console.log('rendering....');
+    const { firstname, lastname, email, phone, password } = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
@@ -88,9 +114,9 @@ class SignUp extends PureComponent {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="phone">Phone</InputLabel>
                 <Input
-                  name="smsphone"
+                  name="phone"
                   type="phone"
-                  id="smsphone"
+                  id="phone"
                   autoComplete="phone"
                   onChange={e => this.handleChange(e)}
                 />
@@ -117,19 +143,30 @@ class SignUp extends PureComponent {
               </FormControl>
               <Mutation
                 mutation={SIGNUP_USER}
-                variables={{ email, smsphone, password }}
+                variables={{
+                  firstname,
+                  lastname,
+                  email,
+                  phone,
+                  password
+                }}
+                onCompleted={this.signUpCompleted}
+                onError={this.signUpError}
               >
-                {postSignUp => (
-                  <Button
-                    onClick={postSignUp}
-                    fullWidth
-                    variant="raised"
-                    color="primary"
-                    className={this.props.classes.submit}
-                  >
-                    Submit
-                  </Button>
-                )}
+                {x => {
+                  console.log('In the x...', x);
+                  return (
+                    <Button
+                      onClick={x}
+                      fullWidth
+                      variant="raised"
+                      color="primary"
+                      className={this.props.classes.submit}
+                    >
+                      Sign Up!
+                    </Button>
+                  );
+                }}
               </Mutation>
             </form>
           </Paper>

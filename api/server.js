@@ -1,5 +1,6 @@
 const express = require('express');
 const { postgraphile } = require('postgraphile');
+const config = require('../config/config');
 
 const app = express();
 
