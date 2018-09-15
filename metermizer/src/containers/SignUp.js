@@ -16,16 +16,16 @@ import styles from '../styles/SignUp';
 
 const SIGNUP_USER = gql`
   mutation SignUp(
-    $firstName: String!
-    $lastName: String!
+    $firstname: String!
+    $lastname: String!
     $email: String!
     $phone: String!
     $password: String!
   ) {
     signupUser(
       input: {
-        firstName: $firstName
-        lastName: $lastName
+        firstname: $firstname
+        lastname: $lastname
         email: $email
         phone: $phone
         password: $password
