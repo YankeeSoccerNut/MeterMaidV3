@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import styles from '../styles/SignUp';
+import MeterMizerSnackBar from '../components/MeterMizerSnackBar';
 
 const SIGNUP_USER = gql`
   mutation SignUp(
@@ -43,9 +44,9 @@ class SignUp extends Component {
     super(props);
     this.state = {};
     this.handleChange = this.handleChange.bind(this);
-    this.onSignUp = this.onSignUp.bind(this);
     this.signUpCompleted = this.signUpCompleted.bind(this);
     this.signUpError = this.signUpError.bind(this);
+    this.clearErrorMessage = this.clearErrorMessage.bind(this);
   }
 
   handleChange(e) {
@@ -54,23 +55,39 @@ class SignUp extends Component {
     });
   }
 
-  onSignUp(e) {
-    e.preventDefault();
-    console.log('onSignUp e', e);
-    this.props.onSignUp(this.state);
-  }
-
   signUpCompleted(data) {
     console.log('signUpCompleted data: ', data);
   }
 
-  signUpError(error) {
-    console.log('signUpError error: ', error);
+  signUpError(graphQLErrors) {
+    console.log('typeof graphQLErrors...', typeof graphQLErrors);
+    for (const key in graphQLErrors) {
+      console.log('key in graphQLErrors-->', key);
+    }
+    console.log('signUpError error: ', graphQLErrors);
+    this.setState({
+      showError: true,
+      error: graphQLErrors.message
+    });
   }
 
+  clearErrorMessage() {
+    this.setState({
+      showError: false,
+      error: ''
+    });
+    console.log('clearErrorMessage called');
+  }
   render() {
-    console.log('rendering....');
-    const { firstname, lastname, email, phone, password } = this.state;
+    const {
+      firstname,
+      lastname,
+      email,
+      phone,
+      password,
+      showError,
+      error
+    } = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
@@ -151,13 +168,12 @@ class SignUp extends Component {
                   password
                 }}
                 onCompleted={this.signUpCompleted}
-                onError={this.signUpError}
+                onError={graphQLErrors => this.signUpError(graphQLErrors)}
               >
-                {x => {
-                  console.log('In the x...', x);
+                {onSignup => {
                   return (
                     <Button
-                      onClick={x}
+                      onClick={onSignup}
                       fullWidth
                       variant="raised"
                       color="primary"
@@ -171,6 +187,14 @@ class SignUp extends Component {
             </form>
           </Paper>
         </main>
+        {showError && (
+          <MeterMizerSnackBar
+            open={showError}
+            variant="error"
+            message={error}
+            onClose={this.clearErrorMessage}
+          />
+        )}
       </React.Fragment>
     );
   }
