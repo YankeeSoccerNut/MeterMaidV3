@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import getLocalUser from '../utils/getLocalUser';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import createNewUser from '../utils/createNewUser';
 
 class Home extends Component {
   constructor() {
@@ -34,8 +33,6 @@ class Home extends Component {
     // Attempt to create a new User
 
     console.log('onSignUp in Home container...', signUpObject);
-    let results = createNewUser(signUpObject);
-    console.log('createNewUser results: ', results);
   }
 
   render() {

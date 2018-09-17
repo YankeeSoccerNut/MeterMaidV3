@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,30 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import styles from '../styles/SignUp';
 import MeterMizerSnackBar from '../components/MeterMizerSnackBar';
-
-const SIGNUP_USER = gql`
-  mutation SignUp(
-    $firstname: String!
-    $lastname: String!
-    $email: String!
-    $phone: String!
-    $password: String!
-  ) {
-    signupUser(
-      input: {
-        firstname: $firstname
-        lastname: $lastname
-        email: $email
-        phone: $phone
-        password: $password
-      }
-    ) {
-      user {
-        id
-      }
-    }
-  }
-`;
+import signUpNewUser from '../utils/signUpNewUser';
 
 class SignUp extends Component {
   constructor(props) {
@@ -55,39 +30,45 @@ class SignUp extends Component {
     });
   }
 
-  signUpCompleted(data) {
-    console.log('signUpCompleted data: ', data);
+  validateForm() {
+    console.log('form validation goes here....');
+    return true;
   }
 
-  signUpError(graphQLErrors) {
-    console.log('typeof graphQLErrors...', typeof graphQLErrors);
-    for (const key in graphQLErrors) {
-      console.log('key in graphQLErrors-->', key);
+  async onSignUp(e) {
+    e.preventDefault();
+
+    if (!this.validateForm()) {
+      return;
     }
-    console.log('signUpError error: ', graphQLErrors);
+
+    console.log('onSignUp e, this.state', e, this.state);
+
+    await signUpNewUser(this.state, this.signUpCompleted, this.signUpError);
+  }
+
+  signUpCompleted(results) {
+    console.log('signUpCompleted results: ', results);
+  }
+
+  signUpError(error) {
     this.setState({
       showError: true,
-      error: graphQLErrors.message
+      errorCode: error.graphQLErrors[0].errcode,
+      errorMessage: error.graphQLErrors[0].detail
     });
   }
 
   clearErrorMessage() {
     this.setState({
       showError: false,
-      error: ''
+      errorCode: '',
+      errorMessage: ''
     });
-    console.log('clearErrorMessage called');
   }
+
   render() {
-    const {
-      firstname,
-      lastname,
-      email,
-      phone,
-      password,
-      showError,
-      error
-    } = this.state;
+    const { showError, errorMessage } = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
@@ -111,6 +92,7 @@ class SignUp extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="firstname">First Name</InputLabel>
                 <Input
+                  required
                   name="firstname"
                   type="text"
                   id="firstname"
@@ -122,6 +104,7 @@ class SignUp extends Component {
                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
                 <Input
                   name="lastname"
+                  required
                   type="text"
                   id="lastname"
                   autoComplete="last-name"
@@ -131,6 +114,7 @@ class SignUp extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="phone">Phone</InputLabel>
                 <Input
+                  required
                   name="phone"
                   type="phone"
                   id="phone"
@@ -141,6 +125,7 @@ class SignUp extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input
+                  required
                   id="email"
                   name="email"
                   autoComplete="email"
@@ -151,6 +136,7 @@ class SignUp extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <Input
+                  required
                   name="password"
                   type="password"
                   id="password"
@@ -158,32 +144,15 @@ class SignUp extends Component {
                   onChange={e => this.handleChange(e)}
                 />
               </FormControl>
-              <Mutation
-                mutation={SIGNUP_USER}
-                variables={{
-                  firstname,
-                  lastname,
-                  email,
-                  phone,
-                  password
-                }}
-                onCompleted={this.signUpCompleted}
-                onError={graphQLErrors => this.signUpError(graphQLErrors)}
+              <Button
+                onClick={e => this.onSignUp(e)}
+                fullWidth
+                variant="raised"
+                color="primary"
+                className={this.props.classes.submit}
               >
-                {onSignup => {
-                  return (
-                    <Button
-                      onClick={onSignup}
-                      fullWidth
-                      variant="raised"
-                      color="primary"
-                      className={this.props.classes.submit}
-                    >
-                      Sign Up!
-                    </Button>
-                  );
-                }}
-              </Mutation>
+                Sign Up!
+              </Button>
             </form>
           </Paper>
         </main>
@@ -191,7 +160,7 @@ class SignUp extends Component {
           <MeterMizerSnackBar
             open={showError}
             variant="error"
-            message={error}
+            message={errorMessage}
             onClose={this.clearErrorMessage}
           />
         )}
