@@ -18,7 +18,7 @@ class UserLocations extends Component {
           variant="raised"
           color="primary"
         >
-          Sign Up!
+          Hit dashboard route
         </Button>
       </div>
     );

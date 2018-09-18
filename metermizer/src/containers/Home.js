@@ -24,6 +24,7 @@ class Home extends Component {
   }
 
   onSignUp(signUpObject) {
+    console.log('onSignUp in Home clicked.....');
     if (!signUpObject) {
       this.setState({
         signUpUser: true

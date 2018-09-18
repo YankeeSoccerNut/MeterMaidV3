@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { AuthConsumer } from '../components/AuthContext';
 
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
@@ -40,7 +39,7 @@ class SignIn extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, onSignUp } = this.props;
 
     return (
       <React.Fragment>
@@ -72,10 +71,6 @@ class SignIn extends PureComponent {
                   onChange={e => this.handleChange(e)}
                 />
               </FormControl>
-              <Typography variant="button">
-                {`Don't have an account? `}
-                <Link to="/signup">Sign Up!</Link>
-              </Typography>
               <Button
                 type="submit"
                 onClick={e => this.submitForm(e)}
@@ -85,6 +80,15 @@ class SignIn extends PureComponent {
                 className={classes.submit}
               >
                 Sign in
+              </Button>
+              <Button
+                type="button"
+                onClick={() => onSignUp()}
+                variant="raised"
+                color="secondary"
+                className={classes.submit}
+              >
+                Need an Account?
               </Button>
             </form>
           </Paper>

@@ -32,7 +32,7 @@ const App = () => {
             <ButtonAppBar />
             <Switch>
               <Route path="/home" component={Home} />
-              <Route path="/userLocations" component={UserLocations} />
+              <PrivateRoute path="/userLocations" component={UserLocations} />
               <Route path="/signout" component={SignOut} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <Route path="/" component={Home} />
