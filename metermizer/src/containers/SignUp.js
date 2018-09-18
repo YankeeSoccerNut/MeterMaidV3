@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -49,6 +50,7 @@ class SignUp extends Component {
 
   signUpCompleted(results) {
     console.log('signUpCompleted results: ', results);
+    this.props.history.push('/userLocations');
   }
 
   signUpError(error) {
@@ -70,7 +72,7 @@ class SignUp extends Component {
   render() {
     const { showError, errorMessage } = this.state;
     return (
-      <React.Fragment>
+      <Fragment>
         <CssBaseline />
         <main className={this.props.classes.layout}>
           <Paper className={this.props.classes.paper}>
@@ -164,7 +166,7 @@ class SignUp extends Component {
             onClose={this.clearErrorMessage}
           />
         )}
-      </React.Fragment>
+      </Fragment>
     );
   }
 }
@@ -174,4 +176,4 @@ SignUp.propTypes = {
   onSignUp: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

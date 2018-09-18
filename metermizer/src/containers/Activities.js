@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { AuthConsumer } from '../components/AuthContext';
 
 import getLocalUser from '../utils/getLocalUser';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
 
-class Home extends Component {
+class Activities extends Component {
   constructor() {
     super();
     this.onSignUp = this.onSignUp.bind(this);
@@ -38,24 +35,11 @@ class Home extends Component {
 
   render() {
     return (
-      <AuthConsumer>
-        {({ login }) => (
-          <div id="homecontainer">
-            {this.state.signUpUser && (
-              <SignUp onSignUp={this.onSignUp} login={login} />
-            )}
-            {!this.state.signUpUser && (
-              <SignIn
-                onSignIn={this.onSignIn}
-                onSignUp={this.onSignUp}
-                login={login}
-              />
-            )}
-          </div>
-        )}
-      </AuthConsumer>
+      <div id="activitiescontainer">
+        <h1>Activities Placeholder</h1>
+      </div>
     );
   }
 }
 
-export default withRouter(Home);
+export default withRouter(Activities);

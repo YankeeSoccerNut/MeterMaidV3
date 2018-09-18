@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react';
+import { withRouter, Link } from 'react-router-dom';
+import { AuthConsumer } from '../components/AuthContext';
+
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -26,24 +29,29 @@ class SignIn extends PureComponent {
 
   submitForm(e) {
     e.preventDefault();
-    this.props.onSignIn(this.state);
-  }
 
-  signUp(e) {
-    this.props.onSignUp();
+    console.log(
+      'this.props.login submitForm SignIn.js >>>>>>>>>>',
+      this.props.login
+    );
+
+    this.props.login();
+    this.props.history.push('/userLocations');
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
       <React.Fragment>
         <CssBaseline />
-        <main className={this.props.classes.layout}>
-          <Paper className={this.props.classes.paper}>
-            <Avatar className={this.props.classes.avatar}>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
             <Typography variant="headline">Sign in</Typography>
-            <form className={this.props.classes.form}>
+            <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input
@@ -65,8 +73,8 @@ class SignIn extends PureComponent {
                 />
               </FormControl>
               <Typography variant="button">
-                Don't have an account?
-                <a onClick={e => this.signUp(e)}>Sign Up!</a>
+                {`Don't have an account? `}
+                <Link to="/signup">Sign Up!</Link>
               </Typography>
               <Button
                 type="submit"
@@ -74,7 +82,7 @@ class SignIn extends PureComponent {
                 fullWidth
                 variant="raised"
                 color="primary"
-                className={this.props.classes.submit}
+                className={classes.submit}
               >
                 Sign in
               </Button>
@@ -85,9 +93,8 @@ class SignIn extends PureComponent {
     );
   }
 }
-
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignIn);
+export default withRouter(withStyles(styles)(SignIn));
