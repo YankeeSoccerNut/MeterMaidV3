@@ -1,21 +1,33 @@
 import React from 'react';
 
-const AuthContext = React.createContext({ isAuth: false });
+const AuthContext = React.createContext({
+  isAuth: false,
+  userId: null
+});
 
 class AuthProvider extends React.Component {
   constructor() {
     super();
-    this.state = { isAuth: false };
+    this.state = {
+      isAuth: false,
+      userId: null
+    };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
-  login() {
-    console.log('setting context isAuth to TRUE');
-    this.setState({ isAuth: true });
+  login(userId) {
+    console.log('setting context isAuth to TRUE, userId: ', userId);
+    this.setState({
+      isAuth: true,
+      userId: userId
+    });
   }
   logout() {
     console.log('setting context isAuth to FALSE');
-    this.setState({ isAuth: false });
+    this.setState({
+      isAuth: false,
+      userId: null
+    });
   }
   render() {
     return (
@@ -23,7 +35,8 @@ class AuthProvider extends React.Component {
         value={{
           isAuth: this.state.isAuth,
           login: this.login,
-          logout: this.logout
+          logout: this.logout,
+          userId: this.state.userId
         }}
       >
         {this.props.children}

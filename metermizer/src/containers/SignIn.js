@@ -34,7 +34,7 @@ class SignIn extends PureComponent {
       this.props.login
     );
 
-    this.props.login();
+    this.props.login(142);
     this.props.history.push('/userLocations');
   }
 

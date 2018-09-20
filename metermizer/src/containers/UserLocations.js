@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import styles from '../styles/UserLocations';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { AuthConsumer } from '../components/AuthContext';
 
 class UserLocations extends Component {
   constructor(props) {
@@ -24,7 +25,14 @@ class UserLocations extends Component {
         <CssBaseline>
           <h1>UserLocations Placeholder</h1>
           <List component="nav" subheader="Your Locations">
-            <Locations onClickLocation={this.onClickLocation} />
+            <AuthConsumer>
+              {({ userId }) => (
+                <Locations
+                  userId={userId}
+                  onClickLocation={this.onClickLocation}
+                />
+              )}
+            </AuthConsumer>
           </List>
         </CssBaseline>
       </div>

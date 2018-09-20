@@ -9,8 +9,8 @@ import PlaceIcon from '@material-ui/icons/Place';
 import PropTypes from 'prop-types';
 
 const GET_LOCATIONS = gql`
-  query AllUserLocations($id: Int!) {
-    allUserLocations(condition: { userId: $id }) {
+  query AllUserLocations($userId: Int!) {
+    allUserLocations(condition: { userId: $userId }) {
       edges {
         node {
           locationByLocationId {
@@ -36,7 +36,7 @@ class Locations extends PureComponent {
 
   render() {
     return (
-      <Query query={GET_LOCATIONS} variables={{ id: 142 }}>
+      <Query query={GET_LOCATIONS} variables={{ userId: this.props.userId }}>
         {({ loading, error, data }) => {
           if (loading) return 'Loading...';
           if (error)
