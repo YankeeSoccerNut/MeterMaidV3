@@ -5,11 +5,10 @@ import { ApolloProvider } from 'react-apollo';
 
 import ButtonAppBar from './components/ButtonAppBar';
 import Home from './containers/Home';
-import SignUp from './containers/SignUp';
-import SignIn from './containers/SignIn';
 import SignOut from './containers/SignOut';
 import Dashboard from './containers/Dashboard';
 import UserLocations from './containers/UserLocations';
+import NotFound from './components/NotFound';
 
 import { AuthProvider } from './components/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -21,8 +20,6 @@ const graphqlClient = new ApolloClient({
   uri: 'http://localhost:4000/graphql'
 });
 
-// import navBar from './containers/navBar';
-
 const App = () => {
   return (
     <ApolloProvider client={graphqlClient}>
@@ -31,11 +28,11 @@ const App = () => {
           <div className="App">
             <ButtonAppBar />
             <Switch>
-              <Route path="/home" component={Home} />
-              <PrivateRoute path="/userLocations" component={UserLocations} />
+              <Route exact path="/" component={Home} />
               <Route path="/signout" component={SignOut} />
+              <PrivateRoute path="/userLocations" component={UserLocations} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <Route path="/" component={Home} />
+              <Route component={NotFound} />
             </Switch>
           </div>
         </AuthProvider>

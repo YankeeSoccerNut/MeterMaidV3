@@ -14,7 +14,6 @@ class Home extends Component {
     this.state = {};
   }
   componentDidMount() {
-    console.log(this.props);
     let localUser = getLocalUser();
     console.log('localUser: ', localUser);
   }

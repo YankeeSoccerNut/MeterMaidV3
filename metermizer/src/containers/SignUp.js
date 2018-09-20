@@ -50,6 +50,7 @@ class SignUp extends Component {
 
   signUpCompleted(results) {
     console.log('signUpCompleted results: ', results);
+    this.props.login();
     this.props.history.push('/userLocations');
   }
 
@@ -71,16 +72,18 @@ class SignUp extends Component {
 
   render() {
     const { showError, errorMessage } = this.state;
+    const { classes } = this.props;
+
     return (
       <Fragment>
         <CssBaseline />
-        <main className={this.props.classes.layout}>
-          <Paper className={this.props.classes.paper}>
-            <Avatar className={this.props.classes.avatar}>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
               <LockIcon />
             </Avatar>
             <Typography variant="headline">New Account Sign Up</Typography>
-            <form className={this.props.classes.form}>
+            <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="companyname">Company Name</InputLabel>
                 <Input
@@ -151,7 +154,7 @@ class SignUp extends Component {
                 fullWidth
                 variant="raised"
                 color="primary"
-                className={this.props.classes.submit}
+                className={classes.submit}
               >
                 Sign Up!
               </Button>

@@ -1,28 +1,39 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import Locations from '../components/Locations';
+import List from '@material-ui/core/List';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import styles from '../styles/UserLocations';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 class UserLocations extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
+    this.onClickLocation = this.onClickLocation.bind(this);
   }
 
+  onClickLocation(locationId) {
+    console.log('UserLocations onClickLocation ', locationId);
+  }
   render() {
+    const { classes } = this.props;
     return (
-      <div id="userlocationscontainer">
-        <h1>UserLocations Placeholder</h1>
-        <Button
-          onClick={() => this.props.history.push('/dashboard')}
-          fullWidth
-          variant="raised"
-          color="primary"
-        >
-          Hit dashboard route
-        </Button>
+      <div id="userlocationscontainer" className={classes.layout}>
+        <CssBaseline>
+          <h1>UserLocations Placeholder</h1>
+          <List component="nav" subheader="Your Locations">
+            <Locations onClickLocation={this.onClickLocation} />
+          </List>
+        </CssBaseline>
       </div>
     );
   }
 }
 
-export default withRouter(UserLocations);
+UserLocations.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withRouter(withStyles(styles)(UserLocations));
