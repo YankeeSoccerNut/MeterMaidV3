@@ -1,7 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import { Query } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
-import MeterMizerSnackBar from './MeterMizerSnackBar';
 import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,7 +11,6 @@ import PlaceIcon from '@material-ui/icons/Place';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
 import PropTypes from 'prop-types';
-import GET_LOCATIONS from '../queries/GET_LOCATIONS';
 
 const styles = theme => ({
   nested: {
@@ -36,77 +33,56 @@ class Locations extends PureComponent {
   }
 
   render() {
-    const { userId, classes } = this.props;
+    const { locations, classes } = this.props;
 
     return (
-      <Query query={GET_LOCATIONS} variables={{ userId: userId }}>
-        {({ loading, error, data }) => {
-          if (loading) return 'Loading...';
-          if (error)
-            return (
-              <MeterMizerSnackBar
-                open
-                variant="error"
-                message={error.message}
-                onClose={() => {}}
-              />
-            );
-
+      <List component="div" subheader="Your Locations">
+        {locations.map(location => {
+          const l = location.node.locationByLocationId;
+          const t = l.thermostatsByLocationId.edges;
           return (
-            <List component="div" subheader="Your Locations">
-              {data.allUserLocations.edges.map(location => {
-                const l = location.node.locationByLocationId;
-                const t = l.thermostatsByLocationId.edges;
-                return (
-                  <ListItem
-                    button
-                    key={l.id}
-                    onClick={this.handleOnClickLocation.bind(this, l.id)}
-                  >
-                    <ListItemIcon>
-                      <PlaceIcon />
-                    </ListItemIcon>
-                    <ListItemText>
-                      {l.name} {l.zip5}
-                    </ListItemText>
-                    {this.state.open ? <ExpandLess /> : <ExpandMore />}
-                    <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                      <List
-                        component="div"
-                        disablePadding
-                        subheader="Thermostats:"
-                      >
-                        {t.map(thermostat => {
-                          return (
-                            <Fragment key={thermostat.node.id}>
-                              <ListItem
-                                key={thermostat.node.id}
-                                className={classes.nested}
-                                button
-                                onClick={this.handleOnClickThermostat.bind(
-                                  this,
-                                  thermostat.node.id
-                                )}
-                              >
-                                <ListItemIcon>
-                                  <TimelineIcon />
-                                </ListItemIcon>
-                                <ListItemText inset>
-                                  {thermostat.node.userDefinedDeviceName}
-                                </ListItemText>
-                              </ListItem>
-                            </Fragment>
-                          );
-                        })}
-                      </List>
-                    </Collapse>
-                  </ListItem>
-                );
-              })}
-            </List>
+            <ListItem
+              button
+              key={l.id}
+              onClick={this.handleOnClickLocation.bind(this, l.id)}
+            >
+              <ListItemIcon>
+                <PlaceIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {l.name} {l.zip5}
+              </ListItemText>
+              {this.state.open ? <ExpandLess /> : <ExpandMore />}
+              <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding subheader="Thermostats:">
+                  {t.map(thermostat => {
+                    return (
+                      <Fragment key={thermostat.node.id}>
+                        <ListItem
+                          key={thermostat.node.id}
+                          className={classes.nested}
+                          button
+                          onClick={this.handleOnClickThermostat.bind(
+                            this,
+                            thermostat.node.id
+                          )}
+                        >
+                          <ListItemIcon>
+                            <TimelineIcon />
+                          </ListItemIcon>
+                          <ListItemText inset>
+                            {thermostat.node.userDefinedDeviceName}
+                          </ListItemText>
+                        </ListItem>
+                      </Fragment>
+                    );
+                  })}
+                </List>
+              </Collapse>
+            </ListItem>
           );
-        }}
-      </Query>
+        })}
+      </List>
     );
   }
 }
