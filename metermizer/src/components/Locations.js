@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import List from '@material-ui/core/List';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -35,29 +36,37 @@ class Locations extends PureComponent {
   render() {
     const { locations, classes } = this.props;
 
+    if (locations.length === 0) {
+      return <h4>No Locations to Display</h4>;
+    }
     return (
-      <List component="div" subheader="Your Locations">
-        {locations.map(location => {
-          const l = location.node.locationByLocationId;
-          const t = l.thermostatsByLocationId.edges;
-          return (
-            <ListItem
-              button
-              key={l.id}
-              onClick={this.handleOnClickLocation.bind(this, l.id)}
-            >
-              <ListItemIcon>
-                <PlaceIcon />
-              </ListItemIcon>
-              <ListItemText>
-                {l.name} {l.zip5}
-              </ListItemText>
-              {this.state.open ? <ExpandLess /> : <ExpandMore />}
-              <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding subheader="Thermostats:">
-                  {t.map(thermostat => {
-                    return (
-                      <Fragment key={thermostat.node.id}>
+      <div>
+        <List
+          component="nav"
+          subheader={
+            <ListSubheader component="div">Your Locations</ListSubheader>
+          }
+        >
+          {locations.map(location => {
+            const l = location.node.locationByLocationId;
+            const t = l.thermostatsByLocationId.edges;
+            return (
+              <Fragment key={l.id}>
+                <ListItem
+                  button
+                  onClick={this.handleOnClickLocation.bind(this, l.id)}
+                >
+                  <ListItemIcon>
+                    <PlaceIcon />
+                  </ListItemIcon>
+                  <ListItemText inset primary={`${l.name} ${l.zip5}`} />
+                  {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+                <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {t.map(thermostat => {
+                      return (
                         <ListItem
                           key={thermostat.node.id}
                           className={classes.nested}
@@ -70,26 +79,28 @@ class Locations extends PureComponent {
                           <ListItemIcon>
                             <TimelineIcon />
                           </ListItemIcon>
-                          <ListItemText inset>
-                            {thermostat.node.userDefinedDeviceName}
-                          </ListItemText>
+                          <ListItemText
+                            inset
+                            primary={thermostat.node.userDefinedDeviceName}
+                          />
                         </ListItem>
-                      </Fragment>
-                    );
-                  })}
-                </List>
-              </Collapse>
-            </ListItem>
-          );
-        })}
-      </List>
+                      );
+                    })}
+                  </List>
+                </Collapse>
+              </Fragment>
+            );
+          })}
+        </List>
+      </div>
     );
   }
 }
 
 Locations.propTypes = {
   onClickLocation: PropTypes.func,
-  classes: PropTypes.object
+  classes: PropTypes.object,
+  locations: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(Locations);
