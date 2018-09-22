@@ -15,11 +15,14 @@ class UserLocations extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.onClickLocation = this.onClickLocation.bind(this);
+    this.onClickMeter = this.onClickMeter.bind(this);
   }
 
-  onClickLocation(locationId) {
-    console.log('UserLocations onClickLocation ', locationId);
+  onClickMeter(meterId) {
+    this.props.history.push({
+      pathname: '/dashboard',
+      state: { meterId: meterId }
+    });
   }
 
   render() {
@@ -46,7 +49,7 @@ class UserLocations extends Component {
                   return (
                     <Locations
                       locations={data.allUserLocations.edges}
-                      onClickLocation={this.onClickLocation}
+                      onClickMeter={this.onClickMeter}
                     />
                   );
                 }}

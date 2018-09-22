@@ -26,11 +26,11 @@ class Locations extends PureComponent {
   }
   handleOnClickLocation(locationId, e) {
     this.setState({ open: !this.state.open });
-    this.props.onClickLocation(locationId);
   }
-  handleOnClickThermostat(thermostatId, e) {
+  handleOnClickMeter(meterId, e) {
     e.stopPropagation();
-    console.log('Location Thermostat Id Clicked: ', thermostatId);
+    console.log('Location Meter Id Clicked: ', meterId);
+    this.props.onClickMeter(meterId);
   }
 
   render() {
@@ -71,9 +71,9 @@ class Locations extends PureComponent {
                           key={thermostat.node.id}
                           className={classes.nested}
                           button
-                          onClick={this.handleOnClickThermostat.bind(
+                          onClick={this.handleOnClickMeter.bind(
                             this,
-                            thermostat.node.id
+                            thermostat.node.thermostatId
                           )}
                         >
                           <ListItemIcon>
@@ -98,7 +98,7 @@ class Locations extends PureComponent {
 }
 
 Locations.propTypes = {
-  onClickLocation: PropTypes.func,
+  onClickMeter: PropTypes.func.isRequired,
   classes: PropTypes.object,
   locations: PropTypes.array.isRequired
 };

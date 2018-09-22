@@ -15,6 +15,7 @@ const GET_LOCATIONS = gql`
               edges {
                 node {
                   id
+                  thermostatId
                   deviceName
                   userDefinedDeviceName
                   lastPolledAt

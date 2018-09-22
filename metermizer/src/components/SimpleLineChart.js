@@ -18,7 +18,8 @@ const data = [
   { name: 'Sun', Visits: 4490, Orders: 4300 }
 ];
 
-function SimpleLineChart() {
+function SimpleLineChart(props) {
+  console.log('simple line chart props', props);
   return (
     // 99% per https://github.com/recharts/recharts/issues/172
     <ResponsiveContainer width="99%" height={320}>
@@ -28,10 +29,9 @@ function SimpleLineChart() {
         <CartesianGrid vertical={false} strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
-        <Line type="monotone" dataKey="Visits" stroke="#82ca9d" />
         <Line
           type="monotone"
-          dataKey="Orders"
+          dataKey="Readings"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
         />
