@@ -48,8 +48,8 @@ class Locations extends PureComponent {
           }
         >
           {locations.map(location => {
-            const l = location.node.locationByLocationId;
-            const t = l.thermostatsByLocationId.edges;
+            const l = location.locationByLocationId;
+            const t = l.thermostatsByLocationId.nodes;
             return (
               <Fragment key={l.id}>
                 <ListItem
@@ -68,12 +68,12 @@ class Locations extends PureComponent {
                     {t.map(thermostat => {
                       return (
                         <ListItem
-                          key={thermostat.node.id}
+                          key={thermostat.id}
                           className={classes.nested}
                           button
                           onClick={this.handleOnClickMeter.bind(
                             this,
-                            thermostat.node.thermostatId
+                            thermostat.thermostatId
                           )}
                         >
                           <ListItemIcon>
@@ -81,7 +81,7 @@ class Locations extends PureComponent {
                           </ListItemIcon>
                           <ListItemText
                             inset
-                            primary={thermostat.node.userDefinedDeviceName}
+                            primary={thermostat.userDefinedDeviceName}
                           />
                         </ListItem>
                       );

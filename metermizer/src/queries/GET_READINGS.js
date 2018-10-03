@@ -4,7 +4,7 @@ const GET_READINGS = gql`
   query AllReadings($thermostatId: Int!) {
     allReadings(
       condition: { thermostatId: $thermostatId }
-      orderBy: CREATED_AT_DESC
+      orderBy: CREATED_AT_ASC
     ) {
       totalCount
       pageInfo {

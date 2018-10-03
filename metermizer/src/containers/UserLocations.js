@@ -48,7 +48,7 @@ class UserLocations extends Component {
 
                   return (
                     <Locations
-                      locations={data.allUserLocations.edges}
+                      locations={data.allUserLocations.nodes}
                       onClickMeter={this.onClickMeter}
                     />
                   );

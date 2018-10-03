@@ -16,11 +16,15 @@ class SimpleLineChart extends PureComponent {
   render() {
     const { classes, readings } = this.props;
 
+    if (readings.length === 0) {
+      return <h4>No Readings to Display</h4>;
+    }
+
     return (
       // 99% per https://github.com/recharts/recharts/issues/172
       <ResponsiveContainer width="99%" height={320}>
         <LineChart data={readings}>
-          <XAxis dataKey="thermCreatedAt" />
+          <XAxis />
           <YAxis />
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <Tooltip />
