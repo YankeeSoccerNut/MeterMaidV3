@@ -2,7 +2,7 @@
   "name": "metermiser_v3",
   "version": "1.0.0",
   "description": "Meter Miser helps small business owners manage heating and cooling costs",
-  "main": "index.js",
+  "main": "meterMaid.js",
   "scripts": {
     "test": "jest"
   },
